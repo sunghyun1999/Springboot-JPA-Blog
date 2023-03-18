@@ -15,7 +15,7 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    BCryptPasswordEncoder encoder;
+    private BCryptPasswordEncoder encoder;
 
     @Transactional
     public void 회원가입(User user) {
@@ -24,6 +24,17 @@ public class UserService {
         user.setPassword(encPassword);
         user.setRole(RoleType.USER);
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void 회원수정(User user) {
+        User persistance = userRepository.findById(user.getId()).orElseThrow(() -> {
+            return new IllegalArgumentException("회원 찾기 실패");
+        });
+        String rawPassword = user.getPassword();
+        String encPassword = encoder.encode(rawPassword);
+        persistance.setPassword(encPassword);
+        persistance.setEmail(user.getEmail());
     }
 
     /*@Transactional(readOnly = true) // Select할 때 트랜잭션 시작, 서비스 종료시에 트랜잭션 종료 (정합성)
