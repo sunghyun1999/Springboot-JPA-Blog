@@ -1,7 +1,9 @@
 package com.cos.blog.test;
 
+import com.cos.blog.model.Board;
 import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
+import com.cos.blog.repository.BoardRepository;
 import com.cos.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -20,6 +22,9 @@ public class DummyControllerTest {
 
     @Autowired // 의존성 주입(DI)
     private UserRepository userRepository;
+
+    @Autowired
+    private BoardRepository boardRepository;
 
     @Transactional // 함수 종료시 자동으로 commit이 된다.
     @PutMapping("/dummy/user/{id}")
@@ -44,12 +49,12 @@ public class DummyControllerTest {
         return userRepository.findAll();
     }
 
-    @GetMapping("/dummy/user")
-    public List<User> pageList(@PageableDefault(size = 2, sort = "id", direction = Sort.Direction.DESC)Pageable pageable) {
-        Page<User> pagingUser = userRepository.findAll(pageable);
+    @GetMapping("/dummy/board")
+    public Page<Board> pageList(@PageableDefault(size = 3, sort = "id", direction = Sort.Direction.DESC)Pageable pageable) {
+        Page<Board> pagingBoard = boardRepository.findAll(pageable);
 
-        List<User> users = pagingUser.getContent();
-        return users;
+        List<Board> boards = pagingBoard.getContent();
+        return pagingBoard;
     }
 
     // 주소로 {id} 파리미터를 전달 받을 수 있음.

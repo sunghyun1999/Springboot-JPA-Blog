@@ -1,7 +1,9 @@
 package com.cos.blog.controller;
 
+import com.cos.blog.model.Board;
 import com.cos.blog.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -19,7 +21,16 @@ public class BoardController {
     // @AuthenticationPrincipal PrincipalDetail principal
     @GetMapping({"", "/"})
     public String index(Model model, @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.DESC)Pageable pageable) {
-        model.addAttribute("boards", boardService.글목록(pageable));
+        Page<Board> boards = boardService.글목록(pageable);
+        int minPage = (boards.getNumber() / 10)  * 10 + 1;
+        int maxPage = minPage + 10 - 1;
+        if (boards.getTotalPages() < maxPage) {
+            maxPage = boards.getTotalPages();
+        }
+
+        model.addAttribute("minPage", minPage);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("boards", boards);
         return "index";
     }
 

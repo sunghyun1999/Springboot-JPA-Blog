@@ -30,6 +30,17 @@
         </c:otherwise>
     </c:choose>
 
+    <c:forEach var="currentPage" begin="${minPage}" end="${maxPage}">
+        <c:choose>
+            <c:when test="${currentPage - 1 == boards.number}">
+                <li class="page-item active"><a class="page-link" href="?page=${currentPage-1}">${currentPage}</a></li>
+            </c:when>
+            <c:otherwise>
+                <li class="page-item"><a class="page-link" href="?page=${currentPage-1}">${currentPage}</a></li>
+            </c:otherwise>
+        </c:choose>
+    </c:forEach>
+
     <c:choose>
         <c:when test="${boards.last}">
             <li class="page-item disabled"><a class="page-link" href="?page=${boards.number + 1}">Next</a></li>
