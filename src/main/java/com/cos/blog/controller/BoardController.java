@@ -12,6 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
 public class BoardController {
 
@@ -40,14 +43,14 @@ public class BoardController {
     }
 
     @GetMapping("/board/{id}")
-    public String findById(@PathVariable int id, Model model) {
-        model.addAttribute("board", boardService.글상세보기(id));
+    public String findById(@PathVariable int id, Model model, HttpServletRequest request, HttpServletResponse response) {
+        model.addAttribute("board", boardService.글상세보기(id, request, response));
         return "board/detail";
     }
 
     @GetMapping("/board/{id}/updateForm")
     public String updateForm(@PathVariable int id, Model model) {
-        model.addAttribute("board", boardService.글상세보기(id));
+        model.addAttribute("board", boardService.글수정페이지보기(id));
         return "board/updateForm";
     }
 }

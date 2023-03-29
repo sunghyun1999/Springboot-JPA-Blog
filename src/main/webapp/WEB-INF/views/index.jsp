@@ -14,6 +14,7 @@
         <div class="card m-2">
             <div class="card-body">
                 <h4 class="card-title">${board.title}</h4>
+                <p class="card-text">조회수 : ${board.count}</p>
                 <a href="/board/${board.id}" class="btn btn-primary">상세보기</a>
             </div>
         </div>
